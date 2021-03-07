@@ -1,5 +1,7 @@
 package view;
 
+import control.PlayerSteering;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.LinkedList;
@@ -10,9 +12,15 @@ public class View {
     Screen screen = new Screen();
     Window window = new Window(screen);
     public void start(){
-        EventQueue.invokeLater(() -> {
-            window.create();
-        });
+        EventQueue.invokeLater(this::run);
+    }
+
+    public View(PlayerSteering playerSteering) {
+        window.jFrame.addKeyListener(playerSteering);
+    }
+
+    private void run() {
+        window.create();
     }
 
     private class Window{

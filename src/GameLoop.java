@@ -1,8 +1,7 @@
-
 public class GameLoop {
-    public static long FPS = 60;
-    public static long ONE_SEC_TO_MILISEC = 1000;
-    public static long DELAY = ONE_SEC_TO_MILISEC / FPS;
+    public static final long FPS = 60;
+    public static final long ONE_SEC_TO_MILISEC = 1000;
+    public static final long DELAY = ONE_SEC_TO_MILISEC / FPS;
     private final SquareGame game;
 
     public GameLoop(SquareGame game) {
