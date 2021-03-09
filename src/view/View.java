@@ -50,7 +50,9 @@ public class View {
         java.util.List<ViewFragment> currentLevelViewComponents = new LinkedList<>();
 
         public void draw(java.util.List<ViewFragment> currentLevelViewComponents){
+            System.out.println("XXXA");
             this.currentLevelViewComponents = currentLevelViewComponents;
+            repaint();
         }
 
         @Override

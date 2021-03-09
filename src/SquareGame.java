@@ -11,5 +11,6 @@ public class SquareGame implements Game {
     public void update(){
         controller.updateView();
         controller.update();
+        controller.updateLevelFragment();
     }
 }
