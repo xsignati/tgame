@@ -1,15 +1,18 @@
+package game;
+
 public class GameLoop {
     public static final long FPS = 60;
     public static final long ONE_SEC_TO_MILISEC = 1000;
     public static final long DELAY = ONE_SEC_TO_MILISEC / FPS;
-    private final SquareGame game;
+    private boolean isRunning = true;
+    private final Game game;
 
-    public GameLoop(SquareGame game) {
+    public GameLoop(Game game) {
         this.game = game;
     }
 
     public void run() throws InterruptedException {
-        while(true) {
+        while(isRunning) {
             long startTime = System.currentTimeMillis();
             game.update();
             long endTime = System.currentTimeMillis() - startTime;
