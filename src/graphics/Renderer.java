@@ -6,6 +6,7 @@ import config.ScreenSizes;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyListener;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -39,6 +40,7 @@ public class Renderer {
         protected void paintComponent(java.awt.Graphics g) {
             super.paintComponent(g);
             Graphics2D g2d = (Graphics2D) g;
+            objectsToDraw.sort(Comparator.comparingInt(a -> a.priority));
             for (Sprite graphic : objectsToDraw){
                 g2d.setColor(graphic.getColor());
                 g2d.fill(graphic.getShape());

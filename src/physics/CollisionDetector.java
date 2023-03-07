@@ -2,7 +2,7 @@ package physics;
 
 import components.Motion;
 import components.PlayerBehavior;
-import entities.Entity;
+import entity.Entity;
 import game.GameManager;
 
 import java.awt.*;

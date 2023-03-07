@@ -1,7 +1,7 @@
 package input;
 
 import components.Component;
-import entities.Entity;
+import entity.Entity;
 import events.EventBus;
 
 import java.awt.event.KeyEvent;

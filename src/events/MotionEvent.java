@@ -1,6 +1,6 @@
 package events;
 
-import entities.Entity;
+import entity.Entity;
 
 public class MotionEvent {
     public int y = 0;

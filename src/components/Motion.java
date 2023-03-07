@@ -1,6 +1,6 @@
 package components;
 
-import entities.Entity;
+import entity.Entity;
 import events.EventBus;
 import events.MotionEvent;
 

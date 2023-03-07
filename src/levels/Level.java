@@ -1,39 +1,43 @@
 package levels;
 
 import components.*;
-import entities.Entity;
+import entity.Entity;
 import game.GameManager;
 import graphics.Renderer;
 import config.ScreenSizes;
 import events.EventBus;
 import input.GameController;
+import world.GameWorld;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.LinkedList;
 import java.util.Random;
 
-public class Level {
+public class Level<levelEntities> {
     private EventBus eventBus = new EventBus();
-    public static final int size = ScreenSizes.HEIGHT_SIZE / 5;
+    public static java.util.List<Entity> levelEntities = new LinkedList<>();
+
     public Renderer view;
     public static final int[][] a =
     {{5,0,0,6,0,0,0,0,0,5,5,5,0,0,0,0,6,0,0,0,0,0,6,0,0,0,0,0,0,6,0,0,0,0,0,6,0,0,0,0,0,6,0,0,0,7,0,0,7,6,0,0,7,0,0,6,0,0,0,0,0,0,6,0,0,7,6,0,0,7,0,0,6,0,0,6,0,0,0,0,0,6,0,0,0,0,0,0,6,0,0,0,0,0,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
      {5,0,0,6,0,0,0,0,0,0,0,0,0,7,0,0,7,0,0,0,6,0,0,0,0,5,5,5,0,0,7,0,0,7,0,0,0,6,0,0,0,0,0,6,0,0,0,7,0,0,7,0,0,0,0,0,0,0,0,0,6,0,0,0,0,0,6,0,0,0,7,0,0,7,0,0,0,6,0,0,0,0,0,6,0,0,0,7,0,0,7,0,0,0,0,6,0,0,0,0,0,6,0,0,0,7,0,0,7,0,0,0,0,0,0,0,0,0,0,0,0,6,0,0,0,0,0,0,0,0,0,0,0,0,7,0,0,0},
      {5,6,0,0,6,0,7,6,0,0,6,0,0,0,5,5,5,5,5,0,0,0,0,0,5,5,5,5,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,5,0,0,5,5,0,0,0,5,5,5,5,5,5,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-     {5,0,0,5,5,0,0,0,0,5,5,5,5,5,5,5,5,5,0,0,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,0,0,5,5,5,5,5,5,5,5,0,5,5,0,0,5,5,0,0,0,0,0,0,0,0,0,5,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,5,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-     {5,5,1,5,5,5,5,5,5,5,5,5,5,5,5,5,5,0,0,0,0,5,0,5,0,0,0,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,5,5,0,5,5,0,0,5,5,0,0,0,0,0,0,0,0,0,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5}};
+     {5,0,1,5,5,0,0,0,0,5,5,5,5,5,5,5,5,5,0,0,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,0,0,5,5,5,5,5,5,5,5,0,5,5,0,0,5,5,0,0,0,0,0,0,0,0,0,5,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,5,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+     {5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,0,0,0,0,5,0,5,0,0,0,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,5,5,0,5,5,0,0,5,5,0,0,0,0,0,0,0,0,0,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5}};
 
-    Entity player = new Entity("player");
+    public Entity player = new Entity("player");
     public void createPlayer(int x, int y){
 
-        Motion motion = new Motion(player, eventBus,Renderer.BASIC_UNIT_SIZE,x,0,y,0,size,size);
+        Motion motion = new Motion(player, eventBus,Renderer.BASIC_UNIT_SIZE,x,0,y,0,ScreenSizes.EVERY_ENTITY_SIZE,ScreenSizes.EVERY_ENTITY_SIZE);
         player.addComponent(motion);
 
         ///Camera
          createPlayerCamera();
 
-
-        player.addComponent(new Sprite(player, eventBus, Color.RED, new Rectangle(x, y, size, size),motion));
+        Sprite s = new Sprite(player, eventBus, Color.RED, new Rectangle(x, y, ScreenSizes.EVERY_ENTITY_SIZE, ScreenSizes.EVERY_ENTITY_SIZE),motion);
+        s.priority = 1;
+        player.addComponent(s);
         PlayerBehavior playerBehavior = new PlayerBehavior(player, eventBus);
         player.addComponent(new Gravity(player, eventBus, motion));
         player.addComponent(new PlayerBehavior(player, eventBus));
@@ -48,7 +52,7 @@ public class Level {
         player.addComponent(controller);
         view.attachListener(controller.inputController);
         //collidor2.addComponent(new Collider(collidor2, eventBus));
-        GameManager.entities.add(player);
+        levelEntities.add(player);
     }
 
     Entity playerCamera = new Entity("playerCamera");
@@ -61,41 +65,43 @@ public class Level {
 
     public void createFloor(int x, int y){
         Entity collidor = new Entity("floor");
-        Motion motion = new Motion(collidor, eventBus, Renderer.BASIC_UNIT_SIZE,x,0,y,0,size,size);
+        Motion motion = new Motion(collidor, eventBus, Renderer.BASIC_UNIT_SIZE,x,0,y,0,ScreenSizes.EVERY_ENTITY_SIZE,ScreenSizes.EVERY_ENTITY_SIZE);
         collidor.addComponent(motion);
         int rgb = 1 + new Random().nextInt(5) * 10;
-        collidor.addComponent(new Sprite(collidor, eventBus, new Color(rgb,rgb,rgb), new Rectangle(x, y, size, size),motion));
-        GameManager.entities.add(collidor);
+        collidor.addComponent(new Sprite(collidor, eventBus, new Color(rgb,rgb,rgb), new Rectangle(x, y, ScreenSizes.EVERY_ENTITY_SIZE, ScreenSizes.EVERY_ENTITY_SIZE),motion));
+        levelEntities.add(collidor);
     }
 
     public void createBackground(int x, int y){
         Entity background = new Entity("background");
         background.collidable = false;
-        Motion motion = new Motion(background, eventBus, Renderer.BASIC_UNIT_SIZE,x,0,y,0,size,size);
+        Motion motion = new Motion(background, eventBus, Renderer.BASIC_UNIT_SIZE,x,0,y,0,ScreenSizes.EVERY_ENTITY_SIZE,ScreenSizes.EVERY_ENTITY_SIZE);
         background.addComponent(motion);
         int rgb = 210 + new Random().nextInt(5) * 10;
         Color color = new Color(rgb,rgb,rgb);
-        background.addComponent(new Sprite(background, eventBus, color, new Rectangle(x, y, size, size),motion));
-        GameManager.entities.add(background);
+        background.addComponent(new Sprite(background, eventBus, color, new Rectangle(x, y, ScreenSizes.EVERY_ENTITY_SIZE, ScreenSizes.EVERY_ENTITY_SIZE),motion));
+        levelEntities.add(background);
     }
 
     public void create(){
         for(int i = 0 ; i < a.length ; i++){
             for(int j = 0 ; j < a[i].length ; j++){
                 if(a[i][j] == 1){
-                    createPlayer(j * size, i * size);
+                    createPlayer(j * ScreenSizes.EVERY_ENTITY_SIZE, i * ScreenSizes.EVERY_ENTITY_SIZE);
                 }
 
                 if(a[i][j] == 5){
-                    createFloor(j * size, i * size);
+                    createFloor(j * ScreenSizes.EVERY_ENTITY_SIZE, i * ScreenSizes.EVERY_ENTITY_SIZE);
                 }
 
                 if(a[i][j] == 0 || a[i][j] == 7 || a[i][j] == 6){
-                    createBackground(j * size, i * size);
+                    createBackground(j * ScreenSizes.EVERY_ENTITY_SIZE, i * ScreenSizes.EVERY_ENTITY_SIZE);
                 }
 
             }
         }
+        //GameManager.entities = new LinkedList<>(levelEntities);
     }
+
 }
 

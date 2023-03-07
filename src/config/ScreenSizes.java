@@ -7,4 +7,5 @@ public class ScreenSizes {
     public static final int WIDTH_SIZE = (int)(gd.getDisplayMode().getWidth() * 0.5);
     public static final int HEIGHT_SIZE = (int)(gd.getDisplayMode().getHeight() * 0.5);
     public static final int BASIC_UNIT_SIZE = (int)(gd.getDisplayMode().getWidth() * 0.005);
+    public static final int EVERY_ENTITY_SIZE = ScreenSizes.HEIGHT_SIZE / 5;
 }

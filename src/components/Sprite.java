@@ -1,6 +1,6 @@
 package components;
 
-import entities.Entity;
+import entity.Entity;
 import events.EventBus;
 
 import java.awt.*;
@@ -9,6 +9,7 @@ public class Sprite extends Component {
     private final Motion motion;
     private Color color;
     private Rectangle shape;
+    public int priority = 0;
 
     public Sprite(Entity entity, EventBus eventBus, Color color, Rectangle shape, Motion motion) {
         super(entity, eventBus);

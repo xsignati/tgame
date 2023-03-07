@@ -1,6 +1,6 @@
 package components;
 
-import entities.Entity;
+import entity.Entity;
 import game.GameManager;
 import config.ScreenSizes;
 import events.EventBus;
@@ -30,11 +30,17 @@ public class Camera extends Component {
             if(playerMotion.getX() + playerMotion.getWidth() + playerMotion.getDx()  >= currentX + ScreenSizes.WIDTH_SIZE * 0.5){
                 currentX = (int)(playerMotion.getX() + playerMotion.getWidth() - ScreenSizes.WIDTH_SIZE * 0.5);
             }
-            cameraFrame = new Rectangle(currentX , 0,ScreenSizes.WIDTH_SIZE,ScreenSizes.HEIGHT_SIZE);
-            if(cameraFrame.intersects(currentShape)){
-                Rectangle shapeDraw = new Rectangle((int)currentShape.getX() - currentX,(int)currentShape.getY(), (int)currentShape.getWidth(), (int)currentShape.getHeight());
-                shapesToDraw.add(new Sprite(null,null,m.getColor(),shapeDraw,null));
-            }
+
+            Rectangle shapeDraw = new Rectangle((int)currentShape.getX() - currentX,(int)currentShape.getY(), (int)currentShape.getWidth(), (int)currentShape.getHeight());
+
+            Sprite sprite = new Sprite(null,null,m.getColor(),shapeDraw,null);
+            if(m.priority == 1){sprite.priority = 1;};
+            shapesToDraw.add(sprite);
+//            cameraFrame = new Rectangle(currentX , 0,ScreenSizes.WIDTH_SIZE,ScreenSizes.HEIGHT_SIZE);
+//            if(cameraFrame.intersects(currentShape)){
+//                Rectangle shapeDraw = new Rectangle((int)currentShape.getX() - currentX,(int)currentShape.getY(), (int)currentShape.getWidth(), (int)currentShape.getHeight());
+//                shapesToDraw.add(new Sprite(null,null,m.getColor(),shapeDraw,null));
+//            }
         });
     }
 }
