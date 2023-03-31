@@ -4,6 +4,7 @@ import components.Motion;
 import components.PlayerBehavior;
 import entity.Entity;
 import game.GameManager;
+import world.GameWorld;
 
 import java.awt.*;
 
@@ -21,8 +22,8 @@ public class CollisionDetector {
     }
 
     public void update() {
-        for (Entity first : GameManager.entities){
-            for (Entity second : GameManager.entities) {
+        for (Entity first : GameWorld.entities){
+            for (Entity second : GameWorld.entities) {
                 if (first != second && first.collidable && second.collidable) {
                     boolean[] isColliding = detectCollision(first,second);
                     if(isColliding[0] || isColliding[1]){

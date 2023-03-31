@@ -38,7 +38,6 @@ public class Level<levelEntities> {
         Sprite s = new Sprite(player, eventBus, Color.RED, new Rectangle(x, y, ScreenSizes.EVERY_ENTITY_SIZE, ScreenSizes.EVERY_ENTITY_SIZE),motion);
         s.priority = 1;
         player.addComponent(s);
-        PlayerBehavior playerBehavior = new PlayerBehavior(player, eventBus);
         player.addComponent(new Gravity(player, eventBus, motion));
         player.addComponent(new PlayerBehavior(player, eventBus));
         //controller
@@ -74,7 +73,7 @@ public class Level<levelEntities> {
 
     public void createBackground(int x, int y){
         Entity background = new Entity("background");
-        background.collidable = false;
+        background.collidable = true;
         Motion motion = new Motion(background, eventBus, Renderer.BASIC_UNIT_SIZE,x,0,y,0,ScreenSizes.EVERY_ENTITY_SIZE,ScreenSizes.EVERY_ENTITY_SIZE);
         background.addComponent(motion);
         int rgb = 210 + new Random().nextInt(5) * 10;

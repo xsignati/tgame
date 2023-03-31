@@ -1,47 +1,54 @@
 package game;
 
 import components.*;
+import entity.Entity;
 import levels.Level;
 import graphics.Renderer;
-import entity.Entity;
 import physics.CollisionDetector;
 import world.CurrentFrame;
+import world.GameWorld;
 
 
 import javax.swing.*;
+import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
 public class GameManager implements Game {
-    public static List<Entity> entities = new LinkedList<>();
-    private Renderer view;
+    private GameWorld gameWorld;
+
+    private Renderer renderer;
     public GameManager(Renderer view) {
-        this.view = view;
+        this.renderer = view;
         view.start();
         Level level = new Level();
         level.view = view;
         level.create();
+        gameWorld = new GameWorld();
+        player = level.player;
+        currentFrame = new CurrentFrame(player);
     }
 
     public void update(){
         updateLogic();
-        updateView();
     }
+
+
     CollisionDetector collisionDetector = new CollisionDetector();
-    CurrentFrame currentFrame = new CurrentFrame();
+    Entity player;
+    CurrentFrame currentFrame;
     private void updateLogic(){
         currentFrame.update(camera);
-        entities.stream().flatMap(entity -> entity.getAllComponents().stream()).filter(component -> component.getClass() != Motion.class && component.getClass() != Sprite.class).forEach(Component::update);
+        GameWorld.entities.stream().flatMap(entity -> entity.getAllComponents().stream()).filter(component -> component.getClass() != Motion.class && component.getClass() != Sprite.class).forEach(Component::update);
         collisionDetector.update();
-        entities.stream().map(e -> e.getComponent(Motion.class)).filter(Objects::nonNull).forEach(Motion::update);
-        entities.stream().map(e -> e.getComponent(Sprite.class)).filter(Objects::nonNull).forEach(Sprite::update);
+        GameWorld.entities.stream().map(e -> e.getComponent(Motion.class)).filter(Objects::nonNull).forEach(Motion::update);
+        GameWorld.entities.stream().map(e -> e.getComponent(Sprite.class)).filter(Objects::nonNull).forEach(Sprite::update);
     }
     public static Camera camera;
-    private void updateView(){
+    public void render() throws InterruptedException, InvocationTargetException {
         if (!SwingUtilities.isEventDispatchThread()) {
-            List<Sprite> shapes = new LinkedList<>(camera.shapesToDraw);
-            SwingUtilities.invokeLater(() -> view.update(shapes));
+            SwingUtilities.invokeAndWait(() -> {List<Sprite> shapes = new LinkedList<>(camera.shapesToDraw); renderer.update(shapes);});
         }
     }
 }

@@ -3,6 +3,8 @@ package components;
 import entity.Entity;
 import events.EventBus;
 import events.MotionEvent;
+import game.Game;
+import game.GameManager;
 
 
 public class Motion extends Component {
@@ -44,24 +46,24 @@ public class Motion extends Component {
     }
 
     public void up(){
-        dy+=-speed - 10;
+        dy-= 15;
     }
 
     public void down(){
-        dy+=speed;
+        dy+=10;
     }
 
     public void left(){
-        dx+=-speed;
+        dx+=-10;
     }
 
     public void right(){
-        dx+=speed+10;
+        dx+=10;
     }
 
     public void jump() {
         if(previousDy == 0) {
-            dy+=-speed * 35;
+            dy+=-30;
         }
     }
 

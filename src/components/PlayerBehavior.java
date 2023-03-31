@@ -20,6 +20,7 @@ public class PlayerBehavior extends Behaviour {
                 entity.getComponent(Motion.class).setDy(0);
             }
         }
+
         if(other.tag.equals("background")){
             if(entity.getComponent(Motion.class).getX() + entity.getComponent(Motion.class).getWidth()*0.5 >= other.getComponent(Motion.class).getX()) {
                 Sprite o = other.getComponent(Sprite.class);

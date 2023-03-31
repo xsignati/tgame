@@ -64,7 +64,6 @@ public class Renderer {
             jFrame.setVisible(true);
         }
     }
-
 }
 
 
