@@ -1,38 +1,36 @@
 package physics;
 
-import components.Motion;
-import components.PlayerBehavior;
-import entity.Entity;
-import game.GameManager;
+import components.Collider;
+import events.CollisionEvent;
 import world.GameWorld;
 
-import java.awt.*;
-
 public class CollisionDetector {
-    public CollisionDetector() {
-    }
-
-    private boolean[] detectCollision(Entity first, Entity second) {
-        Motion m1 = first.getComponent(Motion.class);
-        Motion m2 = second.getComponent(Motion.class);
-        Rectangle withAddedDx = new Rectangle(m1.getX() + m1.getDx(),m1.getY(),m1.getWidth(), m1.getHeight() );
-        Rectangle withAddedDy = new Rectangle(m1.getX(),m1.getY() + m1.getDy(), m1.getWidth(), m1.getHeight() );
-        Rectangle otherCollider = new Rectangle(m2.getX() + m2.getDx(),m2.getY() + m2.getDy(),m2.getWidth(),m2.getHeight());
-        return new boolean[]{withAddedDx.intersects(otherCollider),withAddedDy.intersects(otherCollider)};
-    }
+    public static final int X_AXIS_INDEX = 0;
+    public static final int Y_AXIS_INDEX = 1;
 
     public void update() {
-        for (Entity first : GameWorld.entities){
-            for (Entity second : GameWorld.entities) {
-                if (first != second && first.collidable && second.collidable) {
-                    boolean[] isColliding = detectCollision(first,second);
-                    if(isColliding[0] || isColliding[1]){
-                        PlayerBehavior behavior = first.getComponent(PlayerBehavior.class);
-                        if(behavior != null)
-                            behavior.onCollision(second, isColliding);
-                    }
+        detectCollisions();
+    }
+    private void detectCollisions(){
+        java.util.List<Collider> collidingBodies = GameWorld.getActiveComponents(Collider.class);
+        for (Collider first : collidingBodies){
+            for (Collider second : collidingBodies) {
+                if (first == second) {
+                   continue;
                 }
+                detectCollisionBetween(first,second);
             }
         }
     }
+    private void detectCollisionBetween(Collider first, Collider second){
+        boolean[] isColliding = first.collidesWith(second);
+        if(isColliding[X_AXIS_INDEX] || isColliding[Y_AXIS_INDEX]){
+            broadcastCollisionEvent(first, second, isColliding);
+        }
+    }
+
+    private void broadcastCollisionEvent(Collider first, Collider second, boolean[] isColliding){
+        first.eventBus.post(new CollisionEvent(first.entity,second.entity,isColliding));
+    }
+
 }

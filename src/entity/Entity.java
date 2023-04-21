@@ -1,14 +1,16 @@
 package entity;
 
 import components.Component;
+import components.Position;
 
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
 public class Entity {
-    public final String tag;
-    public boolean collidable = true;
+    public  String tag;
+    public boolean active = false;
+    public Position position = new Position(0,0);
 
     public Entity(String tag) {
         this.tag = tag;
@@ -21,7 +23,7 @@ public class Entity {
     }
 
     public <T> T getComponent(Class<T> type){
-        Optional<Component> o =  components.stream().filter(c -> c.getClass() == type).findFirst();
+        Optional<Component> o =  components.stream().filter(c -> c.getClass() == type || c.getClass().getSuperclass() == type).findFirst();
         return o.map(type::cast).orElse(null);
     }
 

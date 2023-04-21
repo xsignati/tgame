@@ -5,7 +5,7 @@ import events.EventBus;
 
 public abstract class Component {
     public Entity entity;
-    protected EventBus eventBus;
+    public EventBus eventBus;
 
     public Component(Entity entity, EventBus eventBus) {
         this.entity = entity;

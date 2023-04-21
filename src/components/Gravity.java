@@ -13,6 +13,6 @@ public class Gravity extends Component {
     }
 
     public void update(){
-        motion.setDy(motion.getDy() + GRAVITY);
+        motion.accelerateDy(GRAVITY);
     }
 }

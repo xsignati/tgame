@@ -13,11 +13,9 @@ import java.util.List;
 public class Renderer {
     public static final int WIDTH_SIZE = ScreenSizes.WIDTH_SIZE;
     public static final int HEIGHT_SIZE = ScreenSizes.HEIGHT_SIZE;
-    public static final int BASIC_UNIT_SIZE = ScreenSizes.BASIC_UNIT_SIZE;
-
-    Screen screen = new Screen();
-    Window window = new Window(screen);
-    List<Sprite> objectsToDraw = new LinkedList<>();
+    private final Screen screen = new Screen();
+    private final Window window = new Window(screen);
+    private List<Sprite> objectsToDraw = new LinkedList<>();
 
     public void start(){
         EventQueue.invokeLater(this::run);
@@ -49,8 +47,8 @@ public class Renderer {
     }
 
     private static class Window{
-        JFrame jFrame = new JFrame();
-        Screen screen;
+        private final JFrame jFrame = new JFrame();
+        private final Screen screen;
 
         public Window(Screen screen) {
             this.screen = screen;

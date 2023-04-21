@@ -2,47 +2,29 @@ package components;
 
 import entity.Entity;
 import events.EventBus;
-import events.MotionEvent;
-import game.Game;
-import game.GameManager;
 
+import java.util.Objects;
 
 public class Motion extends Component {
-    Vector2d position = new Vector2d(0,0);
-    Vector2d velocity = new Vector2d(0,0);
-    int x;
-    int dx;
-    int y;
-    int dy;
-    int width;
-    int height;
-    int speed;
+    public int dx;
+    public int dy;
     public int previousDy;
+    Position position = entity.position;
 
-    public Motion(Entity entity, EventBus eventBus, int speed, int x, int dx, int y, int dy, int width, int height) {
+    public Motion(Entity entity, EventBus eventBus) {
         super(entity, eventBus);
-        this.x = x;
-        this.dx = dx;
-        this.y = y;
-        this.dy = dy;
-        this.width = width;
-        this.height = height;
-        this.speed = speed;
-        super.eventBus.register(MotionEvent.class, this::onEvent);
-    }
-
-    public void onEvent(MotionEvent motionEvent){
-        if(motionEvent.e.equals(entity)) {
-            dy += motionEvent.y;
-            dx += motionEvent.x;
-        }
     }
 
     public void update(){
-        x+=dx;
-        y+=dy;
+        moveEntity();
         previousDy = dy;
-        dx = dy = 0;
+        zeroDx();
+        zeroDy();
+    }
+
+    private void moveEntity(){
+        position.x+=dx;
+        position.y+=dy;
     }
 
     public void up(){
@@ -61,56 +43,38 @@ public class Motion extends Component {
         dx+=10;
     }
 
+    boolean jumpFinished = true;
+    int jumpLeft = 10;
     public void jump() {
-        if(previousDy == 0) {
-            dy+=-30;
+        if(previousDy == 0 && jumpFinished) {
+            jumpLeft = 20;
+        }
+        if(jumpLeft > 0){
+            jumpLeft--;
+            dy+=-25;
+        }
+        else{
+            jumpFinished = true;
         }
     }
 
-
-    public enum TYPE{
-        UP,DOWN,RIGHT,LEFT
+    public void accelerateDx(int amount){
+        dx += amount;
     }
 
-    public void move(Vector2d velocity){
-        move(velocity, speed);
+    public void accelerateDy(int amount){
+        dy += amount;
     }
 
-    public void move(Vector2d velocity, int amount){
-        position.x += velocity.x;
-        position.y += velocity.y;
+    public void zeroDx(){
+        dx = 0;
     }
 
-    public int getX() {
-        return x;
-    }
+    public void reverseDx() {
+        dx *= -1;}
 
-    public int getDx() {
-        return dx;
-    }
-
-    public void setDx(int dx) {
-        this.dx = dx;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public int getDy() {
-        return dy;
-    }
-
-    public void setDy(int dy) {
-        this.dy = dy;
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public int getHeight() {
-        return height;
+    public void zeroDy(){
+        dy = 0;
     }
 
 }
