@@ -4,14 +4,18 @@ import config.ScreenSizes;
 import entity.Entity;
 import events.CollisionEvent;
 import events.EventBus;
+import input.GameController;
 import levels.LevelCreator;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 
 public class PlayerBehavior extends Component {
+    PlayerController playerController = new PlayerController();
     public PlayerBehavior(Entity entity, EventBus eventBus) {
         super(entity, eventBus);
         eventBus.register(CollisionEvent.class, this::onCollision);
+
     }
 
 
@@ -30,20 +34,11 @@ public class PlayerBehavior extends Component {
 
         }
 
-
-
-//        if(other.tag.equals("background")){
-//            if(entity.getComponent(Collider.class).getX() + entity.getComponent(Collider.class).getWidth()*0.5 >= other.getComponent(Collider.class).getX()) {
-//                Sprite o = other.getComponent(Sprite.class);
-//                entity.getComponent(Sprite.class).setColor(new Color(o.getColor().getRed() , o.getColor().getGreen() - 170, o.getColor().getBlue() - 170,170));
-//
-//            }
-//        }
     }
     int delay = 10;
     public void fire(){
         if(delay == 10) {
-            LevelCreator.createProjectile(entity.position.x + ScreenSizes.EVERY_ENTITY_SIZE,entity.position.y, "right");
+            LevelCreator.createProjectile(entity.position.x + ScreenSizes.EVERY_ENTITY_SIZE + ScreenSizes.BASIC_UNIT_SIZE,entity.position.y, "right");
             delay = 0;
         }
         else {
@@ -53,5 +48,29 @@ public class PlayerBehavior extends Component {
 
     @Override
     public void update() {
+        playerController.update();
+    }
+    private class PlayerController{
+        Motion motion = entity.getComponent(Motion.class);
+        public void update() {
+            if (GameController.isPushed(KeyEvent.VK_W)) {
+                motion.up();
+            }
+            if (GameController.isPushed(KeyEvent.VK_S)) {
+                motion.down();
+            }
+            if (GameController.isPushed(KeyEvent.VK_A)) {
+                motion.left();
+            }
+            if (GameController.isPushed(KeyEvent.VK_D)) {
+                motion.right();
+            }
+            if (GameController.isPushed(KeyEvent.VK_SPACE)) {
+                motion.jump();
+            }
+            if (GameController.isPushed(KeyEvent.VK_F)) {
+                fire();
+            }
+        }
     }
 }

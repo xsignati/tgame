@@ -20,7 +20,7 @@ public class GameManager implements Game {
     private GameWorld gameWorld;
 
     private Renderer renderer;
-    public GameManager(Renderer view) {
+    public GameManager(Renderer view, GameController controller) {
         this.renderer = view;
         view.start();
         LevelCreator level = new LevelCreator();
@@ -29,6 +29,7 @@ public class GameManager implements Game {
         gameWorld = new GameWorld();
         player = level.player;
         currentFrame = new Level(player);
+        view.attachListener(controller.inputController);
     }
 
     public void update(){
@@ -42,14 +43,13 @@ public class GameManager implements Game {
     private void updateLogic(){
         currentFrame.update();
        // GameWorld.entities.stream().flatMap(entity -> entity.getAllComponents().stream()).filter(component -> component.getClass() != Motion.class && component.getClass() != Sprite.class).forEach(Component::update);
-        GameWorld.getActiveComponents(GameController.class).forEach(GameController::update);
-        GameWorld.getActiveComponents(Camera.class).forEach(Camera::update);
-        GameWorld.getActiveComponents(Gravity.class).forEach(Gravity::update);
-        GameWorld.getActiveComponents(Collider.class).forEach(Collider::update);
         GameWorld.getActiveComponents(PlayerBehavior.class).forEach(PlayerBehavior::update);
         GameWorld.getActiveComponents(EnemyBehavior.class).forEach(EnemyBehavior::update);
         GameWorld.getActiveComponents(ProjectileBehavior.class).forEach(ProjectileBehavior::update);
-        System.out.println(GameWorld.getActiveComponents(ProjectileBehavior.class).stream().collect(Collectors.toList()).size());
+        GameWorld.getActiveComponents(LevelBehavior.class).forEach(LevelBehavior::update);
+        GameWorld.getActiveComponents(Camera.class).forEach(Camera::update);
+        GameWorld.getActiveComponents(Gravity.class).forEach(Gravity::update);
+        GameWorld.getActiveComponents(Collider.class).forEach(Collider::update);
         collisionDetector.update();
         GameWorld.getActiveComponents(Motion.class).forEach(Motion::update);
         GameWorld.getActiveComponents(Sprite.class).forEach(Sprite::update);

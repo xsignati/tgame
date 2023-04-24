@@ -11,20 +11,12 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class GameController extends Component {
-    public final InputController inputController = new InputController();
-    Set<Integer> pressedKeys = inputController.getKeys();
-    Map<Integer,Runnable> controls = new HashMap<>();
-    public GameController(Entity entity, EventBus eventBus){
-        super(entity, eventBus);
-    }
+public class GameController  {
+    public static final InputController inputController = new InputController();
+    static Set<Integer> pressedKeys = inputController.getKeys();
 
-    public void update(){
-        pressedKeys.forEach(key -> controls.get(key).run());
-    }
-
-    public void addKey(int keyEvent, Runnable r){
-        controls.put(keyEvent, r);
+    public static boolean isPushed(int keyEvent){
+        return pressedKeys.contains(keyEvent);
     }
 
     static class InputController implements KeyListener {

@@ -5,6 +5,7 @@ import entity.Entity;
 import events.CollisionEvent;
 import events.EventBus;
 import levels.LevelCreator;
+import world.GameWorld;
 
 import java.awt.*;
 
@@ -34,9 +35,25 @@ public class EnemyBehavior extends Component{
     int delay = 0;
     @Override
     public void update() {
+        Entity player = GameWorld.findEntityWithTag("player");
         entity.getComponent(Motion.class).accelerateDx(-move);
+
+        if(Math.abs(player.position.x - entity.position.x) < ScreenSizes.HALF_WIDTH_SIZE){
+            if(player.position.y < entity.position.y){
+                entity.getComponent(Motion.class).jump();
+            }
+
+            if(Math.abs(player.position.y - entity.position.y) < ScreenSizes.BASIC_UNIT_SIZE){
+                fire();
+            }
+
+        }
+
+    }
+
+    private void fire(){
         if(delay == 20) {
-            LevelCreator.createProjectile(entity.position.x -  ScreenSizes.EVERY_ENTITY_SIZE,entity.position.y, "left");
+            LevelCreator.createProjectile(entity.position.x - ScreenSizes.EVERY_ENTITY_SIZE - ScreenSizes.BASIC_UNIT_SIZE,entity.position.y, "left");
             delay = 0;
         }
         else {

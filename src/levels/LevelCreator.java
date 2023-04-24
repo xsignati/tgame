@@ -15,17 +15,18 @@ import java.util.LinkedList;
 import java.util.Random;
 
 public class LevelCreator<levelEntities> {
+
     private static EventBus eventBus = new EventBus();
     public static List<Entity> levelEntities = new LinkedList<>();
 
     public Renderer view;
     public static final int[][] a =
     {{5,0,0,6,0,0,0,0,0,5,5,5,0,5,5,0,6,0,0,0,0,0,6,0,0,0,0,0,0,6,0,0,0,0,0,6,0,0,0,0,0,6,0,0,0,7,0,0,7,6,0,0,7,0,0,6,0,0,0,0,0,0,6,0,0,7,6,0,0,7,0,0,6,0,0,6,0,0,0,0,0,6,0,0,0,0,0,0,6,0,0,0,0,0,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-     {5,0,0,6,0,0,0,2,0,0,0,0,0,5,5,0,7,0,0,0,6,0,0,0,0,5,5,5,0,0,7,0,0,7,0,0,0,6,0,0,0,0,0,6,0,0,0,7,0,0,7,0,0,0,0,0,0,0,0,2,6,0,0,0,0,0,6,0,0,0,7,0,0,7,0,2,0,6,0,0,0,0,0,6,0,0,0,7,0,0,7,0,0,0,0,6,0,0,0,0,0,6,0,0,0,7,0,0,7,0,0,0,0,0,0,0,0,0,0,0,0,6,0,0,0,0,0,0,0,0,0,0,0,0,7,0,0,0},
+     {5,0,0,6,0,0,0,2,0,0,0,0,0,5,5,0,7,0,0,0,6,0,0,0,0,5,5,5,0,0,7,0,0,7,2,0,0,6,0,0,0,0,0,6,0,0,0,7,0,0,7,0,0,0,0,0,0,0,0,2,6,0,0,0,0,0,6,0,0,0,7,0,0,7,0,2,0,6,0,0,0,0,0,6,0,0,0,7,0,0,7,0,0,0,0,6,0,0,0,0,0,6,0,0,0,7,0,0,7,0,0,0,0,0,0,0,0,0,0,0,0,6,0,0,0,0,0,0,0,0,0,0,0,0,7,0,0,0},
      {5,6,0,0,6,0,7,6,0,0,6,0,0,5,5,5,5,5,5,0,0,0,2,0,5,5,5,5,5,0,0,0,0,0,0,0,0,0,0,0,0,2,0,2,0,0,5,5,0,0,5,5,0,0,0,5,5,5,5,5,5,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
      {5,0,1,5,5,0,0,0,0,5,5,5,5,5,5,5,5,5,0,0,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,0,0,5,5,5,5,5,5,5,5,0,5,5,0,0,5,5,0,0,0,0,0,0,0,0,0,5,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,5,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
      {5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,0,0,0,0,5,0,5,0,0,0,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,5,5,0,5,5,0,0,5,5,0,0,0,0,0,0,0,0,0,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5}};
-
+    public static int LEVEL_LENGTH = a[0].length * ScreenSizes.EVERY_ENTITY_SIZE;
     public Entity player = new Entity("player");
     public void createPlayer(int x, int y){
 
@@ -44,17 +45,9 @@ public class LevelCreator<levelEntities> {
         player.addComponent(new Gravity(player, eventBus, motion));
         PlayerBehavior playerBehavior = new PlayerBehavior(player, eventBus);
         player.addComponent(playerBehavior);
-        //controller
-        GameController controller = new GameController(player, eventBus);
-        controller.addKey(KeyEvent.VK_W, motion::up);
-        controller.addKey(KeyEvent.VK_S, motion::down);
-        controller.addKey(KeyEvent.VK_A, motion::left);
-        controller.addKey(KeyEvent.VK_D, motion::right);
-        controller.addKey(KeyEvent.VK_SPACE, motion::jump);
-        controller.addKey(KeyEvent.VK_F, playerBehavior::fire);
 
-        player.addComponent(controller);
-        view.attachListener(controller.inputController);
+
+
         //collidor2.addComponent(new Collider(collidor2, eventBus));
         levelEntities.add(player);
     }
@@ -132,6 +125,7 @@ public class LevelCreator<levelEntities> {
             }
         }
         //GameManager.entities = new LinkedList<>(levelEntities);
+        createLevelManager();
     }
 
     public static void createProjectile(int x, int y, String order){
@@ -147,6 +141,16 @@ public class LevelCreator<levelEntities> {
         ProjectileBehavior projectileBehavior = new ProjectileBehavior(projectile,eventBus, order);
         projectile.addComponent(projectileBehavior);
         levelEntities.add(projectile);
+    }
+    Entity levelManager = new Entity("levelManager");
+    public void createLevelManager(){
+        Motion motion = new Motion(levelManager, eventBus);
+        Collider collider = new Collider(levelManager,eventBus,motion,ScreenSizes.EVERY_ENTITY_SIZE,ScreenSizes.EVERY_ENTITY_SIZE);
+        LevelBehavior levelBehavior = new LevelBehavior(levelManager,eventBus,player);
+        levelManager.addComponent(collider);
+        levelManager.addComponent(motion);
+        levelManager.addComponent(levelBehavior);
+        levelEntities.add(levelManager);
     }
 
 }

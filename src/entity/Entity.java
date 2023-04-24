@@ -9,7 +9,7 @@ import java.util.Set;
 
 public class Entity {
     public  String tag;
-    public boolean active = false;
+    public boolean active = true;
     public Position position = new Position(0,0);
 
     public Entity(String tag) {
