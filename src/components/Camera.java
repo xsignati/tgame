@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.LinkedList;
 
 public class Camera extends Component {
-    Position position;
+    private Position position;
     public static List<Sprite> shapesToDraw = new LinkedList<>();
 
     public Camera(Entity entity, EventBus eventBus, Position position) {
@@ -36,5 +36,9 @@ public class Camera extends Component {
 
     public List<Sprite> getCapturedScreen(){
         return shapesToDraw;
+    }
+
+    public Position getCameraPosition(){
+        return position;
     }
 }

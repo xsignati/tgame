@@ -13,7 +13,7 @@ import java.util.Set;
 
 public class GameController  {
     public static final InputController inputController = new InputController();
-    static Set<Integer> pressedKeys = inputController.getKeys();
+    private static Set<Integer> pressedKeys = inputController.getKeys();
 
     public static boolean isPushed(int keyEvent){
         return pressedKeys.contains(keyEvent);

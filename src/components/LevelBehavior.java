@@ -29,8 +29,8 @@ public class LevelBehavior extends Component{
                player.position.y = 0;
 
             }
-            if(player.position.x <= player.getComponent(Camera.class).position.x){
-                player.position.x =  player.getComponent(Camera.class).position.x;
+            if(player.position.x <= player.getComponent(Camera.class).getCameraPosition().x){
+                player.position.x =  player.getComponent(Camera.class).getCameraPosition().x;
 
             }
             if(player.position.y >= HEIGHT_SIZE){
@@ -49,7 +49,5 @@ public class LevelBehavior extends Component{
     public void update() {
         entity.position.x = player.position.x;
         entity.position.y = player.position.y;
-
-
     }
 }

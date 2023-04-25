@@ -5,8 +5,6 @@ import events.CollisionEvent;
 import events.EventBus;
 import world.GameWorld;
 
-import java.awt.*;
-
 public class ProjectileBehavior extends Component{
     int multiplier = 1;
     public ProjectileBehavior(Entity entity, EventBus eventBus, String order) {

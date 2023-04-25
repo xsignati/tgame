@@ -8,6 +8,7 @@ import java.util.Objects;
 public class Motion extends Component {
     public int dx;
     public int dy;
+    public int previousDx;
     public int previousDy;
     Position position = entity.position;
 
@@ -17,6 +18,7 @@ public class Motion extends Component {
 
     public void update(){
         moveEntity();
+        previousDx = dx;
         previousDy = dy;
         zeroDx();
         zeroDy();
@@ -43,20 +45,9 @@ public class Motion extends Component {
         dx+=10;
     }
 
-    boolean jumpFinished = true;
-    int jumpLeft = 10;
-    public void jump() {
-        if(previousDy == 0 && jumpFinished) {
-            jumpLeft = 20;
-        }
-        if(jumpLeft > 0){
-            jumpLeft--;
-            dy+=-25;
-        }
-        else{
-            jumpFinished = true;
-        }
-    }
+
+
+
 
     public void accelerateDx(int amount){
         dx += amount;
@@ -69,9 +60,6 @@ public class Motion extends Component {
     public void zeroDx(){
         dx = 0;
     }
-
-    public void reverseDx() {
-        dx *= -1;}
 
     public void zeroDy(){
         dy = 0;

@@ -51,6 +51,7 @@ public class GameManager implements Game {
         GameWorld.getActiveComponents(Gravity.class).forEach(Gravity::update);
         GameWorld.getActiveComponents(Collider.class).forEach(Collider::update);
         collisionDetector.update();
+        //System.out.println(GameWorld.findEntityWithTag("player").getComponent(PlayerBehavior.class).isGrounded);
         GameWorld.getActiveComponents(Motion.class).forEach(Motion::update);
         GameWorld.getActiveComponents(Sprite.class).forEach(Sprite::update);
 

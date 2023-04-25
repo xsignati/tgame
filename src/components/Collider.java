@@ -22,7 +22,10 @@ public class Collider extends Component{
     }
 
     public boolean[] collidesWith(Collider other){
-         return new boolean[]{hitBoxWithDx.intersects(other.hitBoxWithDxDy),hitBoxWithDy.intersects(other.hitBoxWithDxDy)};
+        boolean isCollidingX = hitBoxWithDx.intersects(other.hitBoxWithDxDy);
+        boolean isCollidingY = hitBoxWithDy.intersects(other.hitBoxWithDxDy);
+        return new boolean[]{isCollidingX,isCollidingY};
+
     }
 
     @Override

@@ -14,9 +14,7 @@ class Main {
         GameLoop gameLoop = new GameLoop(game);
         try {
             gameLoop.run();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
+        } catch (InterruptedException | InvocationTargetException e) {
             e.printStackTrace();
         }
     }
